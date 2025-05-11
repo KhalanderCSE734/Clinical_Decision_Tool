@@ -1,0 +1,15 @@
+h1{
+    text-align: start;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-top:40px;
+    width: 70%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.453);
+}
+
+.keepContainer{
+    width: 100%;
+    height: max-content;
+    margin-bottom: 50px;
+}

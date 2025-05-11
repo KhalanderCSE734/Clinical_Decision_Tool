@@ -1,0 +1,26 @@
+.doctor-container{
+    width:calc(100% - 300px);
+    height:calc(100vh - 80px);
+    /* background-color: lightcoral; */
+    /* background-color: #F8F9FD; */
+    padding:20px 50px;
+    h1{
+        color:black;
+        font-weight: 500;
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+}
+
+.doctorContainer{
+    /* height: 1300px; */
+    height: max-content;
+    width: 100%;
+    /* background-color:bisque; */
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 35px;
+    row-gap: 40px;
+    padding: 10px;
+    margin: 20px 0;
+}

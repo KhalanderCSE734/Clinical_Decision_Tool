@@ -1,0 +1,69 @@
+.Login-Parent{
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.form-container{
+    height:400px;
+    width:400px;
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding:30px;
+    border-radius:1rem;
+    border:1px solid black;
+    box-shadow: rgba(149, 157, 165, .6) 0px 8px 24px;
+    h1{
+        color:grey;
+        font-size: 2rem;
+        font-weight:700;
+        span{
+            color:green;
+        }
+    }
+    .input{
+        height: 80px;
+        width: 100%;
+        /* background-color: orange; */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        p{
+            font-size:1.1rem;
+            color:black;
+        }
+        input{
+            height: 50%;
+            width: 100%;
+            border:2px solid grey;
+            border-radius:.4rem;
+            font-size:1.1rem;
+            padding-left:10px;
+        }
+    }
+    button{
+        padding:8px;
+        width: 100%;
+        display: grid;
+        place-items: center;
+        color:white;
+        background-color: green;
+        border:2px solid grey;
+        border-radius: .5rem;
+        font-size:1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    p{
+        span{
+            color:green;
+            text-decoration:underline;
+            cursor:pointer;
+        }
+    }
+
+}

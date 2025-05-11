@@ -1,0 +1,44 @@
+.doctor-home-container{
+    width:calc(100% - 300px);
+    /* height:calc(100vh - 80px); */
+    height:max-content;
+    /* background-color: lightcoral; */
+    /* background-color: #F8F9FD; */
+    padding:20px 50px;
+
+    h1{
+        color:black;
+        font-weight: 500;
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+    .appointments .element1 .image{
+            height: 70px;
+            width:70px;
+            /* border-radius:50%; */
+            img{
+                height: 100%;
+                width: 100%;
+                border-radius:50%;
+            }
+    }
+}
+
+
+
+.heading{
+    width: 750px;
+    border-bottom: 1px solid grey;
+    display: flex;
+    align-items: center;
+    column-gap:10px;
+    /* width: 100%; */
+    padding:20px 50px;
+    p{
+        font-size:1.5rem;
+    }
+    .heading-icon{
+        color:green;
+    }
+}

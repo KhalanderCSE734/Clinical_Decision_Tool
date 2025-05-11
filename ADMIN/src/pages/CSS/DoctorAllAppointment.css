@@ -1,0 +1,82 @@
+.doctor-appointment{
+    width:calc(100% - 300px);
+    height:calc(100vh - 80px);
+    /* background-color: lightcoral; */
+    /* background-color: #F8F9FD; */
+    padding:20px 50px;
+}
+
+
+
+
+.doctor-parent-container{
+    width: 90%;
+    height: 500px;
+    /* background-color: lightblue; */
+    margin-top:30px;
+    .element{
+        height: 60px;
+        width: 100%;
+        /* background-color: lightblue; */
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size:1rem;
+        padding:0;
+
+        font-weight: 500;
+
+        /* color:white; */
+        
+        .num{
+            width: 5%;
+            /* background-color: black; */
+        }
+
+        .age{
+            width:10%;
+            /* background-color: green; */
+        }
+
+        .date{
+            width:20%;
+            /* background-color: red; */
+        }
+
+        .info{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width:20%;
+            height: 100%;
+            column-gap:5px;
+            img{
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+            }
+            /* background-color: orange; */
+           
+        }
+        .pay{
+            width:10%;
+            text-align: start;
+            /* background-color: green; */
+        }
+        .heading{
+            display: flex;
+            justify-content: flex-start;
+        }
+        button{
+            height: 40px;
+            width: 40px;
+            padding:0;
+            background-color: rgba(255, 0, 0, 0.426);
+            color:black;
+        }
+    }
+    .ele1{
+        display: flex;
+        justify-content: flex-start;
+    }
+}

@@ -1,0 +1,29 @@
+.sidebar{
+    height: calc(100vh - 80px);
+    width: 300px;
+    /* background-color: greenyellow; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    row-gap:20px;
+    padding-top:20px;
+}
+
+.element{
+    height:60px;
+    font-size:1.2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap:10px;
+    cursor: pointer;
+    padding-left: 40px;
+    .icon{
+        font-size: 1.5rem;
+    }
+}
+
+.active{
+    border-right: 3px solid green;
+    background-color: rgba(172, 255, 47, 0.612);
+}

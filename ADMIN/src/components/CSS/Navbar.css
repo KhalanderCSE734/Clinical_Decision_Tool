@@ -1,0 +1,43 @@
+.nav{
+    height:80px;
+    width: 100%;
+    /* background-color: blueviolet; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:10px 40px;
+    border-bottom:1px solid grey;
+}
+
+.logo-container{
+    width:30%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap:20px;
+    .logo{
+        height: 100%;
+        width: 50%;
+        /* background-color: orangered; */
+        img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+    p{
+        padding:5px 11px;
+        border:2px solid black;
+        border-radius: 1rem;
+        font-size:.9rem;
+    }
+}
+
+button{
+    padding:10px 30px;
+    background-color: green;
+    border-radius:1.4rem;
+    cursor: pointer;
+    color:white;
+}
