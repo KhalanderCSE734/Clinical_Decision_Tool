@@ -23,7 +23,7 @@ const Login = () => {
 
   const [loginState,setLoginState] = useState(false);
 
-  const { backend_URL, isPatientLoggedIn,setIsPatientLoggedIn, patientData,setPatientData, getAuthStatus } = useContext(AppContext);
+  const { backend_URL, isPatientLoggedIn,setIsPatientLoggedIn, patientData,setPatientData, getAuthStatus, setPatientMail } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -57,9 +57,10 @@ const Login = () => {
 
           if(data.success){
             toast.success(data.message);
-            setIsPatientLoggedIn(true);
-            getAuthStatus();
-            navigate('/');
+            // setIsPatientLoggedIn(true);
+            // getAuthStatus();
+            setPatientMail(formDetails.email);
+            navigate('/verifyEmail');
             
           }else{
             console.log(data);
@@ -130,7 +131,8 @@ const Login = () => {
 
               {
                 !loginState ?
-                <button> Create Account </button>:
+                // <button> Create Account </button>:
+                <button> Send OTP </button>:
                 <button> Login </button>
 
               }

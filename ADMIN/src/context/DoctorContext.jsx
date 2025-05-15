@@ -119,9 +119,9 @@ const DoctorContextProvider = (props)=>{
                         }
                     })
 
-                    console.log("OnGoing Appointments ",onGoingApp);
-                    console.log("Cancelled Appointments ",cancelApp);
-                    console.log("Completed Appointments ",completedApp);
+                    // console.log("OnGoing Appointments ",onGoingApp);
+                    // console.log("Cancelled Appointments ",cancelApp);
+                    // console.log("Completed Appointments ",completedApp);
 
                     // const [cancelledAppointments,setCancelledAppointments] = useState([]);
                     // const [completedAppointments,setCompletedAppointments] = useState([]);

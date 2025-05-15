@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const AppointmentInfo = ({name="Vijaya N",profilePic="/user.png",speciality="General Physician",address={ line1:"37th Cross, Richmond",line2:"Circle, Ring Road, London" },date="28 May 2025",time="10:30 AM",cancel=false , appointmentId='randomeId', paymentStatus="pending", completed=false } ) => {
+const AppointmentInfo = ({name="Vijaya N",profilePic="/user.png",speciality="General Physician",address={ line1:"37th Cross, Richmond",line2:"Circle, Ring Road, London" },date="28 May 2025",time="10:30 AM",cancel=false , appointmentId='randomeId', paymentStatus="pending", completed=false, doctorId="kamovnenvlse4567890" } ) => {
 
 
     const { backend_URL, getAuthStatus } = useContext(AppContext);
@@ -159,9 +159,10 @@ const AppointmentInfo = ({name="Vijaya N",profilePic="/user.png",speciality="Gen
             
             {
               paymentStatus=='pending'?
-
-              <button className="pay"> Pay Online </button>:
-
+              <>
+              <button className="pay"> Pay Online </button>
+              <button className="pay" onClick={()=>navigate(`/messages/${doctorId}`)}> Message </button>
+              </>:
               <button className="pay"> Paid </button>
               
             }

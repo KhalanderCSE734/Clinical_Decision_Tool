@@ -8,6 +8,9 @@ import Patient from '../models/patientModel.js';
 import Appointment from '../models/appointmentModel.js';
 
 
+import PatientDetails from '../models/patientDetailsModel.js';
+
+
 import cloudinary from '../config/cloudinary.js';  
 
 
@@ -344,7 +347,6 @@ const getCurrentDoctor = async (req,res)=>{
 
 
 
-
 const doctorAuthCheck = async (req,res)=>{
     try{
 
@@ -353,6 +355,35 @@ const doctorAuthCheck = async (req,res)=>{
     }catch(error){
         return res.json({success:false,message:`Error In DoctornAuthCheck End-Point`});
     }    
-}    
+} 
 
-export { login, logOut, doctorAuthCheck, getCurrentDoctor, getAllAppointments, cancelAppointment, completeAppointment, updateProfile };
+
+
+
+const getPatientDetails = async (req,res)=>{
+    try{
+        const patientId = req.params.patientId;
+        if(!patientId){
+            return res.json({success:false,message:`Patient Id Not found`});
+        }
+
+        const details = await PatientDetails.findOne({patient:patientId}).populate('patient');
+
+        if(!details){
+            return res.json({success:false,message:`Patient Details Not Found`});
+        }
+
+        // console.log(details);
+
+        return res.json({success:true,message:details});
+
+
+
+    }catch(error){
+
+    }
+}
+
+
+
+export { login, logOut, doctorAuthCheck, getCurrentDoctor, getAllAppointments, cancelAppointment, completeAppointment, updateProfile, getPatientDetails };

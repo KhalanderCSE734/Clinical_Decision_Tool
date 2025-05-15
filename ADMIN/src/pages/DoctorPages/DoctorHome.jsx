@@ -6,6 +6,8 @@ import '../CSS/DoctorHome.css';
 
 import { useContext, useState,useEffect, useRef } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 
 import { DoctorContext } from '../../context/DoctorContext';
 
@@ -17,6 +19,8 @@ import { BookKey, NotebookPen } from 'lucide-react';
 import { FcMoneyTransfer, FcCheckmark } from "react-icons/fc";
 
 import { ImCancelCircle } from "react-icons/im";
+import { FaWpforms } from "react-icons/fa6";
+import { BsChatLeftTextFill } from "react-icons/bs";
 
 
 import moment from 'moment';
@@ -34,6 +38,11 @@ const DoctorHome = () => {
   const [earnings,setEarnings] = useState(0);
   const [patientsCount,setPatientsCount] = useState(0);
   const [appointmentsCount,setAppointmentsCount] = useState(0);
+
+
+
+  const navigate = useNavigate();
+
 
 
   const calculateDashBoardData = ()=>{
@@ -146,7 +155,16 @@ const DoctorHome = () => {
                   <div className="element1" key={appointment._id} >
                     <div className="image"> <img src={ appointment.patient.profilePic || "/user.png"} alt="user" /> </div>
                     <div className="details"> <p>  { appointment.patient.fullName || "Dr. Richard Parker"} </p> <p> {moment(`${appointment.slotDate}`, "YYYY-MM-DD").format("Do MMMM, YYYY")} , {appointment.slotTime} </p> </div>
-                    {/* <button> X </button> */}
+
+                    <div className='flex flex-col items-center justify-center'>
+                     <button style={{backgroundColor:"transparent",color:"blue"}} onClick={()=>navigate(`/patientDetails/${appointment.patient._id}`)} > <FaWpforms /> </button>
+                      <p> Patient Details</p>
+                    </div>
+
+                    <div className='flex flex-col items-center justify-center'>
+                     <button style={{backgroundColor:"transparent",color:"green"}} onClick={()=>navigate(`/messages/${appointment.patient._id}`)} > <BsChatLeftTextFill /> </button>
+                      <p> Message </p>
+                    </div>
                   </div> 
                 )
               }) :

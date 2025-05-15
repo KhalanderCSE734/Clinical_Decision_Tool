@@ -3,6 +3,8 @@ import React from 'react';
 import { useState, createContext } from 'react';
 
 
+import { useNavigate } from'react-router-dom';
+
 const AppContext = createContext();
 
 
@@ -15,13 +17,16 @@ import { doctors } from '../assets/assets_frontend/assets';
 
 const AppContextProvider = (props)=>{
 
+
     const backend_URL = import.meta.env.VITE_BACKEND_URL;
 
     const [isPatientLoggedIn,setIsPatientLoggedIn] = useState(false);
     const [patientData,setPatientData] = useState(null);
 
+    const [patientMail,setPatientMail] = useState("");
 
 
+    const navigate = useNavigate();
 
     const getUserData = async ()=>{
 
@@ -83,12 +88,55 @@ const AppContextProvider = (props)=>{
     // getAuthStatus();
 
 
+
+
+
+
+    const VerifyEmailOTP = async (OTP)=>{
+        try{
+            const fetchOptions = {
+                method:"POST",
+                credentials:"include",
+                headers:{
+                    "Content-Type":"application/json",
+                },
+                body:JSON.stringify({patientMail,OTP}),
+            }
+
+            const response = await fetch(`${backend_URL}/api/patient/verifyAccount`,fetchOptions);
+
+            const data = await response.json();
+            console.log(data);
+            if(data.success){
+                toast.success(data.message);
+                setIsPatientLoggedIn(true);
+                getAuthStatus();
+                navigate('/');
+            }else{
+                toast.error(data.message);
+                inputRefs.current[inputRefs.current.length-1].focus();
+            }
+        }catch(error){
+
+        }
+    }
+
+
+
+
+
+
+
+
+
     const value = {
         doctorsList:doctors,
         backend_URL,
         isPatientLoggedIn,setIsPatientLoggedIn,
         patientData,setPatientData,
         getAuthStatus,
+        VerifyEmailOTP,
+        setPatientMail
     };
 
 

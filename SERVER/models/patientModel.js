@@ -38,7 +38,27 @@ const patientSchema = new mongoose.Schema({
     phoneNum:{
         type:String,
         default:"9999999999",
+    },
+
+
+    isAccountVerified:{
+        type:Boolean,
+        default:false,
+    },
+    verifyOtp:{
+        type:String,
+        default:"",
+    },
+    verifyOtpExpiredAt:{
+        type:Number,
+        default:0,
+    },
+
+    isDetailsFilled:{
+        type:Boolean,
+        default:false,
     }
+
 },
 
 {timestamps:true},

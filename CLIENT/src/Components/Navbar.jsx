@@ -91,6 +91,11 @@ const Navbar = () => {
             <ul className="navigate">
               <li> <NavLink to='/'> Home </NavLink> </li>
               <li> <NavLink to='/doctors'> All Doctors </NavLink> </li>
+              {
+                isPatientLoggedIn &&
+                <li> <NavLink to='/myDetails'> My Details </NavLink> </li>
+              }
+
               <li> <NavLink to='/about'> About </NavLink> </li>
               <li> <NavLink to='/contact'> Contact Us </NavLink> </li>
             </ul>

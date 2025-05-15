@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 
-import { login, logOut, doctorAuthCheck, getCurrentDoctor, getAllAppointments, cancelAppointment, completeAppointment, updateProfile } from '../controllers/doctorControllers.js';
+import { login, logOut, doctorAuthCheck, getCurrentDoctor, getAllAppointments, cancelAppointment, completeAppointment, updateProfile, getPatientDetails } from '../controllers/doctorControllers.js';
 
 
 import { doctorAuthMidlleware } from '../middlewares/jwtAuth.js';
@@ -21,7 +21,7 @@ router.put('/cancelAppointment',doctorAuthMidlleware,cancelAppointment);
 router.put('/completeAppointment',doctorAuthMidlleware,completeAppointment);
 
 
-
+router.get('/getPatientDetails/:patientId',doctorAuthMidlleware,getPatientDetails);
 
 
 

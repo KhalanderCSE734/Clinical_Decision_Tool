@@ -109,8 +109,8 @@ const Appointment = () => {
       weekdays2.push(day.format('ddd'));
     }
 
-    console.log(date1);
-    console.log(weekdays2);
+    // console.log(date1);
+    // console.log(weekdays2);
 
 
 
@@ -124,8 +124,8 @@ const Appointment = () => {
 
   useEffect(() => {
     getNext7Days();
-    console.log(dates); 
-    console.log(weekDays);
+    // console.log(dates); 
+    // console.log(weekDays);
   }, [])
   
 
@@ -161,7 +161,7 @@ const Appointment = () => {
   */
 
 
-      const { backend_URL, isPatientLoggedIn } = useContext(AppContext);
+      const { backend_URL, isPatientLoggedIn, patientData } = useContext(AppContext);
 
   
       const fetchDoctors = async()=>{
@@ -249,7 +249,7 @@ useEffect(()=>{
     // console.log(evt.target);
     // console.log(evt.target.closest('p'));
     if(evt.target.closest('p')){
-      console.log("Hello");
+      // console.log("Hello");
       // evt.target.closest('p').style.backgroundColor = "red";
       setSelectedTime(evt.target.closest('p').innerText);
     }
@@ -276,6 +276,14 @@ useEffect(()=>{
 
     if(isPatientLoggedIn){
         // toast.success("You Can Book Appointment");
+
+        console.log(patientData);
+
+        if(!patientData.isDetailsFilled){
+          toast.warn("Please Fill Your Details In 'MyDetails' First Before Booking Appointment");
+          navigate('/myDetails');
+          return;
+        }
 
         const appointmentData = {
           doctorId:doctorID,

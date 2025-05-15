@@ -1,0 +1,72 @@
+
+.OTP-login{
+    width:100%;
+    height:88vh;
+    /* background-image: linear-gradient(to right,#3AA6B9,#5bbbffc3,#91DDCF); */
+    display: grid;
+    place-items:center;
+    color:white;
+
+    .login-div{
+        width:30%;
+        height: max-content;
+        background-color:lightgreen;
+        padding:20px ;
+        display: flex;
+        flex-direction: column;
+        border-radius:2rem;
+        row-gap:30px;
+
+
+        h1{
+            width:100%;
+            font-size:2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .feild{
+            height:40px;
+            width:80%;
+            margin:auto;
+            background-color: palevioletred;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            column-gap: 20px;
+            border-radius:1rem;
+            
+            input{
+                &:focus{
+                    outline:none;
+                }
+            }
+
+        }
+
+        .pass{
+            font-size:.9rem;
+            cursor:pointer;
+        }
+
+        button{
+            height:40px;
+            width:80%;
+            margin:auto;
+            padding:0;
+            background-color: green;
+            cursor: pointer;
+            border-radius:1rem;
+        }
+
+        .acc{
+            span{
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+
+    }
+    
+
+}

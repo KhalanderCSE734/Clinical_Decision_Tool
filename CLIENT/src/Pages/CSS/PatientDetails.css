@@ -1,0 +1,64 @@
+.patient-details-container{
+    margin:20px 0;
+    height:calc(100vh - 60px);
+    width: 100%;
+    /* background-color: orange; */
+    padding-bottom: 10px;
+
+    form, .show-details{
+    /* height: 100%; */
+    height: max-content;
+    margin:20px 0;
+    width: 100%;
+    /* background-color: lightblue; */
+    padding:10px 0 30px 0;
+    /* overflow:scroll; */
+    &::-webkit-scrollbar{
+         display: none; 
+    }
+
+    .pateint-input-container{
+        /* height: 70px; */
+        height:max-content;
+        width: 100%;
+        /* background-color: orangered; */
+        margin-top:20px;
+        display: flex;
+        .feild{
+            width: 50%;
+        }
+
+
+        .feild-1{
+            display: flex;
+            width: 50%;
+            font-size:1.2rem;
+            span{
+                font-weight: bold;
+                /* font-weight: normal; */
+                position: relative;
+                left:10px;
+            }
+        }
+
+
+        input, select{
+            height: 40px;
+            width:90%;
+            border:1px solid grey;
+            padding-left:10px; 
+            margin-top:10px;
+            border-radius:.3rem;
+        }
+        select,option{
+            cursor: pointer;
+        }
+    }
+    textarea{
+        border:2px solid grey;
+        padding:10px;
+    }
+
+}
+
+}

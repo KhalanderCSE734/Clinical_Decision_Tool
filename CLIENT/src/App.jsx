@@ -20,9 +20,12 @@ import About from './Pages/About';
 import Contact from './Pages/Contact';
 import Doctors from './Pages/Doctors';
 import Login from './Pages/Login';
+import OTP from './Pages/OTP';
 import PatientAppointment from './Pages/PatientAppointment';
 import PatientProfile from './Pages/PatientProfile';
 import Appointment from './Pages/Appointment';
+import PatientDetails from './Pages/PatientDetails';
+import MessageDoctor from './Pages/MessageDoctor';
 import PageNotFound from './Pages/PageNotFound';
 
 
@@ -51,6 +54,7 @@ const App = ()=>{
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path='/verifyEmail' element={<OTP/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/about' element={<About/>}/>
         <Route path='/doctors' element={<Doctors/>}/>
@@ -58,6 +62,8 @@ const App = ()=>{
         <Route path='/myAppointment' element={ <PatientAppointment/> }/>
         <Route path='myProfile' element={ <PatientProfile/> }/>
         <Route path='/appointment/:doctorID' element={<Appointment/>}/>   {/**  This one is Particula doctor where user can go and book appointment */}
+        <Route path='/myDetails' element={ <PatientDetails/> }/>
+        <Route path='/messages/:doctorId' element={ <MessageDoctor/> }/>
         <Route path='*' element={<PageNotFound/>}/>
       </Routes>
 

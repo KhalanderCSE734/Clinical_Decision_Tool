@@ -8,6 +8,8 @@ import Doctor from "../models/doctorModel.js";
 import Patient from '../models/patientModel.js';
 // import Appointment from '../models/appointmentModel.js';
 
+import PatientDetails from '../models/patientDetailsModel.js';
+
 
 
 import cloudinary from '../config/cloudinary.js';
@@ -19,6 +21,13 @@ import Appointment from '../models/appointmentModel.js';
 
 
 import RazorPay from 'razorpay';
+
+
+import generateSecureOTP from '../config/getOTP.js';
+
+import transporter from '../config/nodemailer.js';
+// import Patient from '../models/patientModel.js';
+
 
 
 const signUp = async (req,res)=>{
@@ -42,7 +51,7 @@ const signUp = async (req,res)=>{
 
         const userExists = await Patient.findOne({email});
 
-        if(userExists){
+        if(userExists && userExists.isAccountVerified){
             return res.json({success:false,message:`User With Provided Mail Already Exists`});
         }
 
@@ -50,17 +59,83 @@ const signUp = async (req,res)=>{
 
         const hashedPassword = await bcrypt.hash(password,saltRound);
 
-        const newUser = await Patient.create({
-            fullName,
-            email,
-            password:hashedPassword,
-        })
 
-        setUserTokenAndCookie(newUser,res);
+
+        // setUserTokenAndCookie(newUser,res);
 
         // console.log("New User Created SUccessfully",newUser);
 
-        res.json({success:true,message:`A new Patient Has Been Registered Success Fully \n Please Update Your Profile`});
+
+        const {OTP,hashedOTP,expiredAt} = await generateSecureOTP();
+
+        let newUser = "";
+        let updatedUser = "";
+
+        if(!userExists){
+
+            newUser = await Patient.create({
+                fullName,
+                email,
+                password:hashedPassword,
+                verifyOtp:hashedOTP, 
+                verifyOtpExpiredAt: expiredAt
+            })
+            
+        }else{
+            updatedUser = await Patient.findOneAndUpdate({email},
+                {
+                    $set:{
+                        fullName,
+                        email,
+                        password:hashedPassword,
+                        verifyOtp:hashedOTP, 
+                        verifyOtpExpiredAt: expiredAt
+                    }
+                }
+            )
+        }
+
+
+
+        try{
+            // console.log(email);
+            /*
+            const mailOption = {
+                from:process.env.SENDER_EMAIL_SMT,
+                to:email,
+                subject:'Welcom To WeAndOurs',
+                text:`We Heartly Welcome You To Our Website. Your Account Has Been Created Successfully With The Email Id :- ${email}`,
+            }
+            */
+
+            const mailOption = {
+                from:`WeAndOurs HealthCare <${process.env.SENDER_EMAIL_SMT}>`,
+                to:email,
+                subject:`Welcom To 'WeAndOurs' Community`,
+                html: `
+                  <h1> Hello ${fullName}</h1>
+                  <h2>Welcome to WeAndOurs HealthCare </h2>
+                  <p>Enter the OTP  <b> ${OTP} </b> To Create Account With The Provided email: <strong>${email}</strong></p>
+                  <p>Enjoy your experience 💖</p>
+                  
+                `,
+            }
+
+            //<img src=${'/Health.png'} alt="Health Is Wealth">
+
+
+            const info = await transporter.sendMail(mailOption);
+            console.log(`Mail Has been Sent With The message id :- ${info}, ${info.messageId}`); 
+
+        }catch(error){
+            console.log(`Error while Generating the mail ${error}, ${error.message}`);
+            return res.json({success:false,message:"Error In Sending OTP to Patient's Email"});
+        }
+
+
+
+        // res.json({success:true,message:`A new Patient Has Been Registered Success Fully \n Please Update Your Profile`});
+        res.json({success:true,message:`OTP Has Been Sent SuccessFully`});
 
 
     }catch(error){
@@ -68,6 +143,66 @@ const signUp = async (req,res)=>{
         res.json({success:false,message:`Error In Signup End Point ${error}`});
     }
 }
+
+
+
+
+const verifyEmailWithOTP = async (req,res)=>{
+    try{
+
+        const { OTP, patientMail } = req.body;
+
+        console.log(req.body);
+
+        if(!OTP){
+            return res.json({sucess:false,message:"Enter the OTP"});
+        }
+
+        const patient = await Patient.findOne({email:patientMail});
+        console.log(patient);
+        if(!patient){
+            return res.json({success:false,message:"Email Not Found"});
+        }
+
+        console.log(patient);
+        
+        if(patient.verifyOtp==""){
+            return res.json({success:false,message:`OTP Is Not Found`})
+        }
+
+        const isOTPVerified = await bcrypt.compare(String(OTP),patient.verifyOtp);
+
+        if(patient.verifyOtp=='' || !isOTPVerified){
+            return res.json({success:false,message:`Invalid OTP`});
+        }
+
+        if(patient.verifyOtpExpiredAt < Date.now()){
+            return res.json({success:false,message:`OTP Has Been Expired`});
+        }
+
+        const newUser = await Patient.findOneAndUpdate(
+            {email:patientMail},
+            {
+                $set:{
+                    isAccountVerified:true,
+                    verifyOtp:"",
+                    verifyOtpExpiredAt:0,
+                }
+            },
+            {new:true}
+        ) 
+
+        setUserTokenAndCookie(newUser,res);
+
+        return res.json({success:true,message:`Account Has Been Created And Verified Succcessfully, Update The Profile Please`});
+
+
+    }catch(error){
+       console.log(`Error in the verify OTP (BackEnd) ${error}`);
+        return res.json({success:false,message:`Error in the verify OTP (BackEnd) ${error}`});
+    }
+}
+
 
 
 
@@ -102,6 +237,8 @@ const login = async (req,res)=>{
         res.json({success:false,message:`Error In Login End Point ${error}`});
     }
 }
+
+
 
 
 
@@ -476,4 +613,167 @@ const verifyRazorPayPayment = async (req,res)=>{
 
 
 
-export { signUp, login, logOut, checkPatientAuthorization, getCurrentPatient, updateProfile, showAllDoctors, showSelectedPatientAppointment, cancelAppointment, createPaymentOrder, verifyRazorPayPayment };
+
+
+
+// CDT: Clinical Decision Tool
+
+
+const TakeDetailsInput = async (req,res)=>{
+    const userId  = req.user;
+
+    if(!userId){
+        return res.json({success:false,message:`Patient Not Found, Login Again Please `});
+    }
+
+    try{
+
+
+
+        const patient = await Patient.findById(userId);
+
+         if(!patient){
+            return res.json({success:false,message:`Patient Not Found, Login Again Please `});
+        }
+
+
+        // console.log(req.body);
+
+        const { age, gender, height, weight, BMI, diabetes_duration, hba1c, fasting_blood_glucose, postprandial_glucose, c_peptide, sbp, dbp, total_cholesterol, triglycerides, ldl_cholesterol, hdl_cholesterol,serum_creatinine, estimated_GFR, urinary_albumin_creatinine_ratio, smoking_status, alcohol_consumption, medications, metformin_usage, lipid_lowering_drugs    } = req.body;
+
+        if(!age || !gender || !height || !weight || !BMI || !diabetes_duration || !hba1c || !fasting_blood_glucose || !postprandial_glucose || !c_peptide || !sbp || !dbp || !total_cholesterol || !triglycerides || !ldl_cholesterol || !hdl_cholesterol || !serum_creatinine || !estimated_GFR || !urinary_albumin_creatinine_ratio || !smoking_status || !alcohol_consumption || !medications || !metformin_usage || !lipid_lowering_drugs ){
+            return res.json({success:false,message:`All Mentioned Fields Are Mandatory To Fill`});
+        }
+
+        if(!patient.isDetailsFilled){
+            
+
+        const details = await PatientDetails.create({
+            patient:userId,
+            age, 
+            gender, 
+            height, 
+            weight, 
+            BMI, 
+            diabetes_duration, 
+            hba1c, 
+            fasting_blood_glucose, 
+            postprandial_glucose, 
+            c_peptide, 
+            sbp, 
+            dbp, 
+            total_cholesterol, 
+            triglycerides, 
+            ldl_cholesterol, 
+            hdl_cholesterol,
+            serum_creatinine, 
+            estimated_GFR, 
+            urinary_albumin_creatinine_ratio, 
+            smoking_status, 
+            alcohol_consumption, 
+            medications, 
+            metformin_usage, 
+            lipid_lowering_drugs
+        })
+
+        
+        } else{
+            const details = await PatientDetails.findOneAndUpdate(
+                {patient:userId},
+                {
+                    $set:{
+                        patient:userId,
+                        age, 
+                        gender, 
+                        height, 
+                        weight, 
+                        BMI, 
+                        diabetes_duration, 
+                        hba1c, 
+                        fasting_blood_glucose, 
+                        postprandial_glucose, 
+                        c_peptide, 
+                        sbp, 
+                        dbp, 
+                        total_cholesterol, 
+                        triglycerides, 
+                        ldl_cholesterol, 
+                        hdl_cholesterol,
+                        serum_creatinine, 
+                        estimated_GFR, 
+                        urinary_albumin_creatinine_ratio, 
+                        smoking_status, 
+                        alcohol_consumption, 
+                        medications, 
+                        metformin_usage, 
+                        lipid_lowering_drugs
+                    }
+                }
+            )
+        }
+
+        const updatePatient = await Patient.findByIdAndUpdate(userId, 
+            {
+                $set:{
+                    isDetailsFilled:true
+                }
+            }
+        )
+
+        return res.json({success:true,message:`Patient Details Updated SuccessFully`});
+
+    }catch(error){
+        console.log(`Error In Taking input for Patient Details ${error}`);
+        return res.json({success:false,message:`Error In Taking input for Patient Details ${error}`});
+    }
+
+}
+
+
+
+const getPatientDetails = async (req,res)=>{
+    try{
+
+        const patientId = req.user;
+
+        if(!patientId){
+            return res.json({success:false,message:`Patient Not Found, Login Again Please `});
+        }
+
+        const patient = await Patient.findById(patientId); 
+
+        if(!patient){
+            return res.json({success:false,message:`Patient Not Found, Login Again Please `});
+        }
+
+        if(!patient.isDetailsFilled){
+            return res.json({success:false,message:`Please Fill The Details to Get the Details`});
+        }
+
+        const details = await PatientDetails.find({patient:patientId}).populate('patient');
+
+        if(!details){
+            return res.json({success:false,message:`Patient Details Not Found`});
+        }
+
+        // console.log(details);
+
+        return res.json({success:true,message:details});
+
+
+    }catch(error){
+        console.log(`Error In Getting Patient Details ${error}`);
+        return res.json({success:false,message:`Error In Taking input for Patient Details ${error}`});
+    }
+}
+
+
+
+
+
+
+
+
+
+
+export { signUp, verifyEmailWithOTP, login, logOut, checkPatientAuthorization, getCurrentPatient, updateProfile, showAllDoctors, showSelectedPatientAppointment, cancelAppointment, createPaymentOrder, verifyRazorPayPayment,  TakeDetailsInput, getPatientDetails };

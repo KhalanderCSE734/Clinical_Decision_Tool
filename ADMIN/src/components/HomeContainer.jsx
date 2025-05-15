@@ -131,7 +131,7 @@ const HomeContainer = () => {
 
                 <div className="image"> <img src="/doctor.png" alt="" /> </div>
                 <div className="num">
-                    <span>{doctorCount ? doctorCount : 14 }</span>
+                    <span> {doctorCount} </span>
                     <p>Doctors</p>
                 </div>
 

@@ -87,6 +87,7 @@ const AddDoctor = () => {
 
         if(!doctorDetails.fullName || !doctorDetails.email || !doctorDetails.about || !doctorDetails.password || !doctorDetails.degree || !doctorDetails.address.line1 || !doctorDetails.speciality || !doctorDetails.experience || !doctorDetails.fees){
             toast.warn('All Details Are Mandatory');
+            return;
         }
 
         // toast.success("Doctor Added SuccessFully");

@@ -22,6 +22,9 @@ import patientRouter from './routes/patientRoute.js';
 import appointmentRouter from './routes/appointmentsRoute.js';
 
 
+import messageRouter from './routes/messageRoute.js';
+
+
 
 
 
@@ -76,6 +79,9 @@ app.use('/api/patient',patientRouter);
 
 
 app.use('/api/appointment',appointmentRouter);
+
+
+app.use('/api/messages',messageRouter);
 
 
 

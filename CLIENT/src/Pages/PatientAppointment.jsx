@@ -111,7 +111,7 @@ const PatientAppointment = () => {
           appointments.map((appointment,ind)=>{
             if(!appointment.cancelled && !appointment.completed){
               return(
-                <AppointmentInfo key={appointment._id}  name={appointment.doctor.fullName } profilePic={ appointment.doctor.profilePic } speciality={ appointment.doctor.speciality } address={ appointment.doctor.address } date={ appointment.slotDate } time={ appointment.slotTime } cancel={ appointment.cancelled } appointmentId={appointment._id} paymentStatus={appointment.paymentStatus} completed={appointment.completed} />
+                <AppointmentInfo key={appointment._id}  name={appointment.doctor.fullName } profilePic={ appointment.doctor.profilePic } speciality={ appointment.doctor.speciality } address={ appointment.doctor.address } date={ appointment.slotDate } time={ appointment.slotTime } cancel={ appointment.cancelled } appointmentId={appointment._id} paymentStatus={appointment.paymentStatus} completed={appointment.completed} doctorId={appointment.doctor._id} />
               )
             }
             // else{

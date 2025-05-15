@@ -35,6 +35,10 @@ import DoctorAllAppointment from './pages/DoctorPages/DoctorAllAppointment';
 import DoctorProfile from './pages/DoctorPages/DoctorProfile';
 
 
+import PatientDetails from './pages/DoctorPages/PatientDetails';
+import MessagePatient from './pages/DoctorPages/MessagePatient';
+
+
 
 
 const App = ()=>{
@@ -78,6 +82,8 @@ const App = ()=>{
                   <Route path='/doctorAppointments' element={ <DoctorAllAppointment/> }/>
                   <Route path='/doctorProfile' element={ <DoctorProfile/> }/>
                   
+                  <Route path='/messages/:patientId' element={ <MessagePatient/> }/>
+                  <Route path='/patientDetails/:patientId' element={ <PatientDetails/> } />
 
               </Routes>
               {/* <HomeContainer/> */}

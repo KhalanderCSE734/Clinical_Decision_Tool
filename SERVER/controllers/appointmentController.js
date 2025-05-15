@@ -68,18 +68,18 @@ const bookAppointment = async (req,res)=>{
             
         }
 
-        console.log(checkIfBooked);
+        // console.log(checkIfBooked);
 
         if(checkIfBooked.length>0){
             const isAppointmentThere = checkIfBooked.filter((ele,ind)=>{
                 return ele.time == slotTime;
             })
-            console.log(isAppointmentThere);
+            // console.log(isAppointmentThere);
             if(isAppointmentThere.length>0){
                 console.log("Entered In ", checkIfBooked, "Time", isAppointmentThere);
                 return res.json({success:false,message:`No Slots are Available`});
             }else{
-                console.log(isAppointmentThere);
+                // console.log(isAppointmentThere);
                 let slot = await Doctor.findById(doctorId);
 
                 slot.slots_booked.push({date:slotDate,time:slotTime});
