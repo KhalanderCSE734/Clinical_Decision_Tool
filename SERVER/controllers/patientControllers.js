@@ -220,6 +220,10 @@ const login = async (req,res)=>{
         if(!user){
             return res.json({success:false,message:`User With the Provided Mail Doesn't Exist `});
         }
+        
+        if(!user.isAccountVerified){
+            return res.json({succes:false,message:`User With the Provided Mail Doesn't Exist, Please Sign Up to continue`});
+        }
 
         const isPassWordCorrect = await bcrypt.compare(password,user.password); // The 'argument' order should be same as this, otherwise we won't get proper expected output 
 
